@@ -3,10 +3,19 @@ import VideoPlayer from './modules/playVideo';
 import MiniSlider from './modules/slider/slider-mini';
 import Difference from './modules/difference';
 import Forms from './modules/forms';
+import Download from './modules/download';
 
 window.addEventListener('DOMContentLoaded', () => {
   const slider = new MainSlider({ btns: '.next', container: '.page' });
   slider.render();
+
+  const modulePageSlider = new MainSlider ({
+    container: '.moduleapp',
+    btns: '.next',
+  });
+  modulePageSlider.render();
+  // eslint-disable-next-line no-new
+  modulePageSlider.showAccordeon('.plus__content', '.msg');
 
   const showUpSlider = new MiniSlider({
     container: '.showup__content-slider',
@@ -36,12 +45,13 @@ window.addEventListener('DOMContentLoaded', () => {
   });
   feedSlider.init();
 
-  const player = new VideoPlayer('.showup .play', '.overlay');
-  player.init();
+  new VideoPlayer('.showup .play', '.overlay').init();
+  new VideoPlayer('.module__video-item .play', '.overlay').init();
 
   new Difference('.officerold', '.officernew', '.officer__card-item').init();
 
   // eslint-disable-next-line no-new
   new Forms('.join__evolution').init();
   new Forms('.schedule__form').init();
+  new Download('.download').init();
 });

@@ -7,30 +7,32 @@ export default class MainSlider extends Slider {
   }
 
   showSlides(n) {
-    if (n > this.slides.length) {
-      this.slideIndex = 1;
-    }
-    if (n < 1) {
-      this.slideIndex = this.slides.length;
-    }
-
     try {
-      this.hanson.style.opacity = '0';
-      if (n === 3) {
-        this.hanson.classList.add('animated');
-        setTimeout(() => {
-          this.hanson.classList.add('fadeInUp');
-        }, 3000);
-      } else {
-        this.hanson.classList.remove('fadeInUp');
+      if (n > this.slides.length) {
+        this.slideIndex = 1;
       }
+      if (n < 1) {
+        this.slideIndex = this.slides.length;
+      }
+
+      try {
+        this.hanson.style.opacity = '0';
+        if (n === 3) {
+          this.hanson.classList.add('animated');
+          setTimeout(() => {
+            this.hanson.classList.add('fadeInUp');
+          }, 3000);
+        } else {
+          this.hanson.classList.remove('fadeInUp');
+        }
+      } catch (e) {}
+
+      this.slides.forEach((slide) => {
+        slide.style.display = 'none';
+      });
+
+      this.slides[this.slideIndex - 1].style.display = 'block';
     } catch (e) {}
-
-    this.slides.forEach((slide) => {
-      slide.style.display = 'none';
-    });
-
-    this.slides[this.slideIndex - 1].style.display = 'block';
   }
 
   plusSlides(n) {
@@ -38,7 +40,7 @@ export default class MainSlider extends Slider {
   }
 
   render() {
-    try {
+    if (this.container) {
       try {
         this.hanson = document.querySelector('.hanson');
       } catch (e) {}
@@ -54,6 +56,28 @@ export default class MainSlider extends Slider {
         });
       });
       this.showSlides(this.slideIndex);
-    } catch (e) {}
+
+      document.querySelectorAll('.prevmodule').forEach((item) => {
+        item.addEventListener('click', () => {
+          this.plusSlides(-1);
+        });
+      });
+
+      document.querySelectorAll('.nextmodule').forEach((item) => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.plusSlides(1);
+        });
+      });
+    }
+  }
+
+  showAccordeon(btn) {
+    const trigger = document.querySelectorAll(btn);
+    trigger.forEach((elem) => {
+      elem.addEventListener('click', () => {
+        elem.closest('.module__info-show').nextElementSibling.style.display = 'block';
+      });
+    });
   }
 }
